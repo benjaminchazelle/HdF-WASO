@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>μCAS - Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <h1>μCAS &ndash; Test</h1>
+        <p id="output">
+            Blah , blah blah...
+        </p>
+        <script>
+
+            var xmlhttp = new XMLHttpRequest();
+            var url = './service?action=test';
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    var data = JSON.parse(xmlhttp.responseText);
+                    onRequestResult(data);
+                }
+                else if (xmlhttp.readyState === 4) {
+                    onRequestError(xmlhttp.status, xmlhttp.responseText);
+                }
+            };
+            xmlhttp.open("POST", url, true);
+            xmlhttp.send();
+
+            function onRequestResult(data) {
+                console.log('Request Result');
+                console.log(data);
+                var session = data.session;
+                if (data.nosession) {
+                    document.getElementById('output').innerHTML = 'No Session...';
+                }
+                else {
+                    document.getElementById('output').innerHTML = 'Session: ' + session.description.description + ' &lt;' + session.login + '&gt;';
+                }
+            }
+
+            function onRequestError(status, text) {
+                console.log('HTTP Error ' + status + ' -- ' + text);
+                document.getElementById('output').innerHTML = 'Error loading data... (' + status + ')';
+            }
+        </script>
+    </body>
+</html>

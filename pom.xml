@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.insalyon.waso</groupId>
+    <artifactId>fr.insalyon.waso</artifactId>
+    <version>0.1</version>
+    <packaging>pom</packaging>
+
+    <name>[WASO] WASO Root Project</name>
+
+    <modules>
+	<module>WASO-common</module>
+        <module>WASO-microCAS</module>
+        <module>WASO-IHM-Web</module>
+        <module>WASO-SMA</module>
+        <module>WASO-SOM-Client</module>
+    </modules>
+
+</project>

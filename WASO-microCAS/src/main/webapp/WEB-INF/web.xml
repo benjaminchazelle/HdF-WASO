@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>MicroCasFilter</filter-name>
+        <filter-class>fr.insalyon.waso.util.MicroCasFilter</filter-class>
+        <init-param>
+            <param-name>MicroCasServerUrl</param-name>
+            <param-value>http://localhost:8080/WASO-microCAS/cas</param-value>
+            <!-- <param-value>http://192.168.56.104:8080/WASO-microCAS/cas</param-value> -->
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>MicroCasFilter</filter-name>
+        <url-pattern>/test/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>MicroCasServlet</servlet-name>
+        <servlet-class>fr.insalyon.waso.microcas.MicroCasServlet</servlet-class>
+        <init-param>
+            <param-name>LDAP-Server-URL</param-name>
+            <!-- <param-value>ldap://192.168.56.102</param-value> -->
+            <param-value>test</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MicroCasServlet</servlet-name>
+        <url-pattern>/cas</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>MicroCasTestServlet</servlet-name>
+        <servlet-class>fr.insalyon.waso.microcas.MicroCasTestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MicroCasTestServlet</servlet-name>
+        <url-pattern>/test/service</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

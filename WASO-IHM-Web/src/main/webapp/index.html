@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WASO - Recherche Client</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> -->
+        <link rel="stylesheet" href="./css/jquery-ui-1.11.0-smoothness.css">
+        <link rel="stylesheet" href="./css/jquery.dataTables-1.10.12.min.css">
+        <link rel="stylesheet" href="./css/dataTables.jqueryui-1.10.12.min.css">
+
+        <!-- <script src="//code.jquery.com/jquery-1.12.1.min.js"></script> -->
+        <script src="./js/jquery-1.12.1.min.js"></script>
+        <!-- <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script> -->
+        <script src="./js/jquery-ui-1.11.0.js"></script>
+        <script src="./js/jquery.dataTables-1.10.12.min.js"></script>
+        <script src="./js/dataTables.jqueryui-1.10.12.min.js"></script>
+
+        <style>
+            .table-client {
+                border-collapse: collapse;
+                border: 1px solid black;
+                width: 90%;
+            }
+            .table-client th, .table-client td {
+                border: 1px solid black;
+                padding: 5px 20px;
+                vertical-align: top;
+            }
+
+            div#panel { margin: 20px 0; }
+
+            table.dataTable tr.odd { background-color:  #F9F9F9; }
+
+            table.panel { margin: 10px auto; }
+            table.panel td { padding: 0 30px; }
+            table.panel td.label {  }
+            table.panel td.field input { width: 250px; }
+            button#bouton-rechercher { height: 6em; width: 200px; }
+
+            h1 { text-align: center; }
+        </style>
+    </head>
+    <body>
+        <h1>WASO &ndash; Recherche Client</h1>
+        <div id="panel">
+            <table class="panel">
+                <tr>
+                    <td class="label">Numéro Client</td>
+                    <td class="field"><input id="recherche-numero" type="text" size="20"/></td>
+                    <td rowspan="4"><button id="bouton-rechercher">Rechercher</button></td>
+                </tr>
+                <tr>
+                    <td class="label">Dénomination Client</td>
+                    <td class="field"><input id="recherche-denomination" type="text" size="20" /></td>
+                </tr>
+                <tr>
+                    <td class="label">Nom Personne</td>
+                    <td class="field"><input id="recherche-nom-personne" type="text" size="20" /></td>
+                </tr>
+                <tr>
+                    <td class="label">Ville (filtre)</td>
+                    <td class="field"><input id="recherche-ville" type="text" size="20" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="section-resultat-recherche">
+            <table id="resultat-recherche">
+                <thead>
+                    <tr>
+                        <th>Dénomination Client</th>
+                        <th>Adresse Client</th>
+                        <th>Nom Personne</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+
+        <script>
+
+            var resultDataTable;
+
+            function displayClients(clients) {
+
+                var formattedClients = new Array();
+                for (var i = 0; i < clients.length; i++) {
+
+                    var formattedPersonnes = '';
+                    for (var j = 0; j < clients[i].personnes.length; j++) {
+                        formattedPersonnes += (j > 0 ? '<br/>' : '') + clients[i].personnes[j].nom + ' ' + clients[i].personnes[j].prenom;
+                    }
+
+                    formattedClients.push({
+                        id: clients[i].id,
+                        denomination: clients[i].denomination,
+                        adresse: clients[i].adresse.replace(', ', '<br/>') + '<br/>' + clients[i].ville,
+                        personnes: formattedPersonnes
+                    });
+                }
+
+                resultDataTable.clear().rows.add(formattedClients).draw();
+            }
+
+            $(function() {
+
+                $("#bouton-rechercher").button().on("click", function() {
+                    $.ajax({
+                        url: './AjaxAction',
+                        type: 'POST',
+                        data: {
+                            'action': 'getListeClient',
+                            'numero-client': $('#recherche-numero').val(),
+                            'denomination-client': $('#recherche-denomination').val(),
+                            'nom-personne': $('#recherche-nom-personne').val(),
+                            'ville-client': $('#recherche-ville').val()
+                        },
+                        dataType: 'json'
+                    })
+                            .done(function(data) {
+                                var clients = data.clients;
+                                if (clients) {
+                                    displayClients(clients);
+                                }
+                                else {
+                                    resultDataTable.clear().rows.add([{denomination: 'ERREUR de chargement...', adresse: 'Pas de liste de Clients', personnes: '(Service non-implémenté?)'}]).draw();
+                                }
+                            })
+                            .fail(function() {
+                                resultDataTable.clear().rows.add([{denomination: 'ERREUR de chargement...', adresse: 'ERREUR', personnes: 'ERREUR'}]).draw();
+                            })
+                            .always(function() {
+                                //
+                            });
+                });
+
+                resultDataTable = $('#resultat-recherche').DataTable({
+                    data: [],
+                    columns: [
+                        {data: 'denomination'},
+                        {data: 'adresse'},
+                        {data: 'personnes'}
+                    ],
+                    language: {
+                        url: './js/dataTables.French.json'
+                    }
+                });
+
+            });
+
+        </script>
+    </body>
+</html>

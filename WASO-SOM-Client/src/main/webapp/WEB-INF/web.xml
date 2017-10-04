@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <servlet>
+        <servlet-name>ServiceObjetMetierServlet</servlet-name>
+        <servlet-class>fr.insalyon.waso.som.client.ServiceObjetMetierServlet</servlet-class>
+        <init-param>
+            <param-name>JDBC-Client-URL</param-name>
+            <!-- <param-value>jdbc:mysql://localhost:3306/WASO-DB-Client</param-value> -->
+            <!-- <param-value>jdbc:mysql://localhost:8889/WASO-DB-Client</param-value> -->
+            <param-value>jdbc:derby://localhost:1527/WASO-BD-Client</param-value>
+        </init-param>
+        <init-param>
+            <param-name>JDBC-Client-User</param-name>
+            <param-value>waso</param-value>
+        </init-param>
+        <init-param>
+            <param-name>JDBC-Client-Password</param-name>
+            <param-value>waso</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServiceObjetMetierServlet</servlet-name>
+        <url-pattern>/ServiceObjetMetier</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

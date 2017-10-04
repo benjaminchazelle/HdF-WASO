@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>μCAS - Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <h1>μCAS &ndash; Login</h1>
+        <form action="./cas" method="POST">
+            <input type="hidden" name="action" value="login" />
+            <table>
+                <tr>
+                    <td>Login</td>
+                    <td><input id="login" name="login" type="text" size="50" /></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input id="password" name="password" type="password" size="50" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="login-cation" name="login-action" type="submit" value="Login" /></td>
+                </tr>            
+            </table>
+        </form>
+    </body>
+</html>
